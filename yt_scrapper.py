@@ -23,7 +23,7 @@ def main():
 
 
 def open_new_container(video_link, seconds):
-    subprocess.run(["docker", "run", "--name", "yt-linux", "-e", video_link, "-d", "mongo"])
+    subprocess.run(["docker", "run", "--name", "yt-linux", "-e", "LINK=" + video_link, "-d", "mongo"])
     while seconds > 0:
         time.sleep(1)
         seconds -= 1
