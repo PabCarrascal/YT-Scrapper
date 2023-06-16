@@ -1,0 +1,6 @@
+api_service_name = "youtube"
+api_version = "v3"
+developer_key = "AIzaSyDuJxMUPp4KmvVWpIjRaQte12qQzrB9gUs"
+channel_id = "UCnws_li2Wmdc9peU0hQzS9A"
+yt_watch = "https://www.youtube.com/watch?v="
+mongo_uri = "mongodb+srv://reconquistadevteam:RDT4TL4S@rdt-cluster.6gj7wir.mongodb.net/?retryWrites=true&w=majority"
