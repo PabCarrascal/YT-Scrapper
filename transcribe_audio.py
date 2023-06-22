@@ -18,12 +18,12 @@ def transcribe_video(video_url):
         stream.download('', file_name)
         model = whisper.load_model("base")
         result = model.transcribe(file_name)
-        deleteFile()
+        delete_file()
         return result["text"]
     except:
-        deleteFile()
+        delete_file()
 
 
-def deleteFile():
+def delete_file():
     if os.path.exists(file_name):
         os.remove(file_name)
