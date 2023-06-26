@@ -1,6 +1,7 @@
 import config
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from datetime import datetime
 
 
 def connect():
@@ -57,3 +58,27 @@ def get_all_messages(channel_id):
             text_list.append(video_text)
     client.close()
     return text_list
+
+
+def add_new_view(channel_id, video_id):
+    client = connect()
+    database = client['yt-scrapper-db']
+    collection = database['views']
+    message_json = {"channel_id": channel_id, "video_id": video_id, "createdDate": create_datetime(), "viewedDate": ""}
+    collection.insert_one(message_json)
+    client.close()
+
+
+def update_view(channel_id, video_id):
+    client = connect()
+    database = client['yt-scrapper-db']
+    collection = database['views']
+    filter_row = {"channel_id": channel_id, "video_id": video_id}
+    update = {"$set": {"viewedDate": create_datetime()}}
+    result = collection.update_one(filter_row, update)
+    if result.matched_count <= 0:
+        print("No update was made for channel %s and video %s", channel_id, video_id)
+
+
+def create_datetime():
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
