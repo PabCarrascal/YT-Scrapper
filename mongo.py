@@ -5,10 +5,8 @@ from datetime import datetime
 
 
 def connect():
-    # Create a new client and connect to the server
     client = MongoClient(config.mongo_uri, server_api=ServerApi('1'))
 
-    # Send a ping to confirm a successful connection
     try:
         client.admin.command('ping')
     except Exception as e:
@@ -17,32 +15,55 @@ def connect():
     return client
 
 
-def persist_profile(channel_id, essence):
-    client = connect()
-    database = client['yt-scrapper-db']
-    collection = database['profiles']
-    message_json = {"channel_id": channel_id, "essence": essence}
-    collection.insert_one(message_json)
-    client.close()
-
-
 def get_profile(channel_id):
     client = connect()
     database = client['yt-scrapper-db']
     collection = database['profiles']
     message_json = {"channel_id": channel_id}
-    profile = collection.find_one(message_json).get('essence')
+    profile = collection.find_one(message_json)
+    if profile is not None:
+        return profile.get('essence')
     client.close()
     return profile
+
+
+def persist_profile(channel_id, essence):
+    client = connect()
+    database = client['yt-scrapper-db']
+    collection = database['profiles']
+    profile_id = collection.insert_one({"channel_id": channel_id, "essence": essence})
+    yt_profile = collection.find_one({"_id": profile_id})
+    client.close()
+    return yt_profile
+
+
+def update_profile(channel_id, essence):
+    client = connect()
+    database = client['yt-scrapper-db']
+    collection = database['profiles']
+    message_filter = {"channel_id": channel_id}
+    message_json = {"$set": {"essence": essence}}
+    collection.update_one(message_filter, message_json)
+    client.close()
 
 
 def persist_message(channel_id, video_id, video_text):
     client = connect()
     database = client['yt-scrapper-db']
     collection = database['messages']
-    message_json = {"channel_id": channel_id, "video_id": video_id, "video_text": "{\"role\": \"user\", \"content\": " + video_text + "}"}
+    message_json = {"channel_id": channel_id, "video_id": video_id, "video_text": video_text}
     collection.insert_one(message_json)
     client.close()
+
+
+def get_message(channel_id, video_id):
+    client = connect()
+    database = client['yt-scrapper-db']
+    collection = database['messages']
+    message_json = {"channel_id": channel_id, "video_id": video_id}
+    yt_video = collection.find_one(message_json)
+    client.close()
+    return yt_video
 
 
 def get_all_messages(channel_id):
@@ -81,4 +102,4 @@ def update_view(channel_id, video_id):
 
 
 def create_datetime():
-    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return datetime.now().strftime("%d-%m-%Y %H:%M:%S")

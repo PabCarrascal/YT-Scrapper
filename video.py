@@ -8,8 +8,8 @@ import subprocess
 import time
 
 
-def get_random_video(youtube_client):
-    playlist_from_channel = get_playlists_from_channel(youtube_client, config.channel_id)['items']
+def get_random_video(youtube_client, channel_id):
+    playlist_from_channel = get_playlists_from_channel(youtube_client, channel_id)['items']
     random_playlist = get_info(random.choice(playlist_from_channel))
     random_playlist_item = get_playlist_item_info(youtube_client, random_playlist['id'])
     video_id = random.choice(random_playlist_item['items'])['contentDetails']['videoId']

@@ -10,8 +10,8 @@ def transcribe_video(video_url):
     try:
         try:
             yt = YouTube(video_url)
-        except:
-            print("Connection error")
+        except Exception as io:
+            print("Connection error. \n%s", io)
 
         yt.streams.filter(file_extension="mp4")
         stream = yt.streams.get_by_itag(139)
@@ -20,7 +20,8 @@ def transcribe_video(video_url):
         result = model.transcribe(file_name)
         delete_file()
         return result["text"]
-    except:
+    except Exception as e:
+        print("Error transcribing a video. \n%s", e)
         delete_file()
 
 

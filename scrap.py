@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import googleapiclient.discovery
 import config
 import sys
@@ -13,10 +12,12 @@ def main():
         print_help()
         exit(1)
 
+    channel_id = sys.argv[2]
+
     if sys.argv[1] == "video":
-        video.get_random_video(youtube)
+        yt_video = video.get_random_video(youtube, channel_id)
     elif sys.argv[1] == "profile":
-        profile.get_profile(youtube)
+        yt_profile = profile.retrieve_profile(youtube, channel_id)
     else:
         print_help()
         exit(1)
