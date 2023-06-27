@@ -1,19 +1,20 @@
 import config
 import random
 from youtube import get_playlists_from_channel
-from youtube import get_playlist_item_info
+from youtube import get_items_from_playlist
 from youtube import get_info
 from youtube import get_video_info
 import subprocess
 import time
+import globals
 
 
-def get_random_video(youtube_client, channel_id):
-    playlist_from_channel = get_playlists_from_channel(youtube_client, channel_id)['items']
+def get_random_video(channel_id):
+    playlist_from_channel = get_playlists_from_channel(globals.youtube_client, channel_id)['items']
     random_playlist = get_info(random.choice(playlist_from_channel))
-    random_playlist_item = get_playlist_item_info(youtube_client, random_playlist['id'])
+    random_playlist_item = get_items_from_playlist(globals.youtube_client, random_playlist['id'])
     video_id = random.choice(random_playlist_item['items'])['contentDetails']['videoId']
-    open_new_container(config.yt_watch + video_id, get_video_seconds(get_video_info(youtube_client, video_id)))
+    open_new_container(config.yt_watch + video_id, get_video_seconds(get_video_info(globals.youtube_client, video_id)))
     return
 
 
@@ -24,7 +25,8 @@ def open_new_container(video_link, seconds):
             time.sleep(1)
             seconds -= 1
         subprocess.run(["docker", "stop", "yt-linux"])
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Check if docker is running.")
 
 

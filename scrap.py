@@ -1,13 +1,9 @@
-import googleapiclient.discovery
-import config
 import sys
 import profile
 import video
 
 
 def main():
-    youtube = googleapiclient.discovery.build(config.api_service_name, config.api_version,
-                                              developerKey=config.developer_key)
     if len(sys.argv) != 3:
         print_help()
         exit(1)
@@ -15,9 +11,9 @@ def main():
     channel_id = sys.argv[2]
 
     if sys.argv[1] == "video":
-        yt_video = video.get_random_video(youtube, channel_id)
+        yt_video = video.get_random_video(channel_id)
     elif sys.argv[1] == "profile":
-        yt_profile = profile.retrieve_profile(youtube, channel_id)
+        yt_profile = profile.retrieve_profile(channel_id)
     else:
         print_help()
         exit(1)

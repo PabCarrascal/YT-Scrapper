@@ -2,6 +2,7 @@ import config
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from datetime import datetime
+import globals
 
 
 def connect():
@@ -9,10 +10,15 @@ def connect():
 
     try:
         client.admin.command('ping')
+        globals.set_global_mongo_client(client)
     except Exception as e:
         print("Unable to connect to MongoDB Atlas.")
         print(e)
     return client
+
+
+def disconnect():
+    globals.mongo_client.close()
 
 
 def get_profile(channel_id):
