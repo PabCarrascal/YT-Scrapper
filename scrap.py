@@ -11,9 +11,9 @@ def main():
     channel_id = sys.argv[2]
 
     if sys.argv[1] == "video":
-        yt_video = video.get_random_video(channel_id)
+        video.get_random_video(channel_id)
     elif sys.argv[1] == "profile":
-        yt_profile = profile.retrieve_profile(channel_id)
+        profile.retrieve_profile(channel_id)
     else:
         print_help()
         exit(1)

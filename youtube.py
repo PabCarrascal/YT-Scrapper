@@ -8,7 +8,7 @@ def connect():
     youtube = None
     try:
         youtube = googleapiclient.discovery.build(config.api_service_name, config.api_version,
-                                                  developerKey=config.developer_key)
+                                                  developerKey=config.yt_developer_key)
     except Exception as e:
         print("Unable to connect to to Youtube API")
         print(e)

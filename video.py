@@ -14,7 +14,7 @@ def get_random_video(channel_id):
     random_playlist = get_info(random.choice(playlist_from_channel))
     random_playlist_item = get_items_from_playlist(globals.youtube_client, random_playlist['id'])
     video_id = random.choice(random_playlist_item['items'])['contentDetails']['videoId']
-    open_new_container(config.yt_watch + video_id, get_video_seconds(get_video_info(globals.youtube_client, video_id)))
+    open_new_container(config.yt_watch_url + video_id, get_video_seconds(get_video_info(globals.youtube_client, video_id)))
     return
 
 

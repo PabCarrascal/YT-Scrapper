@@ -21,7 +21,7 @@ def retrieve_profile(channel_id):
         yt_video = mongo.get_message(channel_id, video_id)
         if yt_video is None:
             new_videos = True
-            url = config.yt_watch + video_id
+            url = config.yt_watch_url + video_id
             video_text = transcribe_audio.transcribe_video(url)
             mongo.persist_message(channel_id, video_id, video_text)
             video_texts.append(video_text + ".\n")
